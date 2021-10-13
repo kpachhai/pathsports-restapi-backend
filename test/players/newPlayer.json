@@ -1,0 +1,24 @@
+{
+    "did": "did:elastos:ipsGDumwoBti6iwPF8rWHqFg2ishQ9yHdH",
+    "name": "Neymar",
+    "firstName": "Neymar",
+    "lastName": "da Silva Santos Júnior",
+    "birth": {
+        "date": "1992-02-05",
+        "place": "Mogi das Cruzes",
+        "country": "Brazil"
+    },
+    "nationality": "Brazil",
+    "height": "175 cm",
+    "weight": "68 kg",
+    "injured": false,
+    "photo": "https://media.api-sports.io/football/players/276.png",
+    "social": {
+        "instagram": "neymarOfficial",
+        "facebook": "neymarOfficial",
+        "snapchat": "neymarOfficial",
+        "discord": "neymarOfficial"
+    },
+    "sport": "football",
+    "team": "Paris Saint Germain"
+}
