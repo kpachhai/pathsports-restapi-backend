@@ -1,0 +1,23 @@
+3P%:3-Point Field Goal Percentage         Decimal (0-100)
+3PT:3-Point Field Goals Made-Attempted    Whole Number - Whole Number
+AST:Assists                               Whole Number
+BLK:Blocks                                Whole Number
+FG:Field Goals Made-Attempted             Whole Number - Whole Number
+FG%:Field Goal Percentage                 Decimal (0-100)
+FT:Free Throws Made-Attempted             Whole Number - Whole Number
+FT%:Free Throw Percentage                 Decimal (0-100)
+MIN:Minutes                               Whole Number
+PF:Fouls                                  Whole Number
+PTS:Points                                Whole Number
+REB:Rebounds                              Whole Number
+STL:Steals                                Whole Number
+TO:Turnovers                              Whole Number
+
+Date: Date
+Opponent Team: String
+Your Team Score: Whole Number
+Opponent Team Score: Whole Number
+
+Team: String
+
+Reference: https://www.espn.com/nba/player/gamelog/_/id/110/kobe-bryant

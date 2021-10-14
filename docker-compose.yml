@@ -1,8 +1,14 @@
-version: '3'
+version: '3.3'
 services:
-  mongo:
-    image: mongo
-    volumes:
-      - ./data:/data/db
-    ports:
-      - "27017:27017"
+    mongo:
+        image: mongo
+        volumes:
+            - ${HOME}/.pathsports-data/pathsports-mongo-data:/data/db
+        # volumes:
+        #   - ./data:/data/db
+        ports:
+            - 37018:27017
+        environment:
+            - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+            - MONGO_INITDB_ROOT_PASSWORD=mongopass
+        tty: true
