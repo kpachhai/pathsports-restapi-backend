@@ -12,13 +12,15 @@ const tokenExpirationInSeconds = 3 * 30 * 24 * 60 * 60; // 3 * 30 days
 class AuthController {
     async createJWT(req: express.Request, res: express.Response) {
         try {
-            const refreshId = req.body.userId + jwtSecret;
+            const refreshId = req.body.did + jwtSecret;
             const salt = crypto.createSecretKey(crypto.randomBytes(16));
             const hash = crypto
                 .createHmac('sha512', salt)
                 .update(refreshId)
                 .digest('base64');
             req.body.refreshKey = salt.export();
+            // console.log('Body for JWT creation: ', req.body);
+
             const token = jwt.sign(req.body, jwtSecret, {
                 expiresIn: tokenExpirationInSeconds,
             });

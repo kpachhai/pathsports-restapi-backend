@@ -24,10 +24,11 @@ export class UsersRoutes extends CommonRoutesConfig {
             )
             .post(
                 UsersMiddleware.validateRequiredUserBodyFields,
-                UsersMiddleware.validateSameEmailDoesntExist,
+                UsersMiddleware.validateSameDidDoesntExist,
                 UsersController.createUser
             );
 
+        //routes with userId as identifier
         this.app.param(`userId`, UsersMiddleware.extractUserId);
         this.app
             .route(`/users/:userId`)
@@ -41,7 +42,7 @@ export class UsersRoutes extends CommonRoutesConfig {
 
         this.app.put(`/users/:userId`, [
             jwtMiddleware.validJWTNeeded,
-            body('email').isEmail(),
+            body('did').isString(),
             body('password')
                 .isLength({ min: 5 })
                 .withMessage('Must include password (5+ characters)'),
@@ -49,7 +50,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             body('lastName').isString(),
             body('permissionLevel').isInt(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
-            UsersMiddleware.validateSameEmailBelongToSameUser,
+            UsersMiddleware.validateSameDidBelongToSameUser,
             UsersMiddleware.userCantChangePermission,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
             permissionMiddleware.minimumPermissionLevelRequired(
@@ -60,7 +61,7 @@ export class UsersRoutes extends CommonRoutesConfig {
 
         this.app.patch(`/users/:userId`, [
             jwtMiddleware.validJWTNeeded,
-            body('email').isEmail().optional(),
+            body('did').isString().optional(),
             body('password')
                 .isLength({ min: 5 })
                 .withMessage('Password must be 5+ characters')
@@ -69,7 +70,7 @@ export class UsersRoutes extends CommonRoutesConfig {
             body('lastName').isString().optional(),
             body('permissionLevel').isInt().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
-            UsersMiddleware.validatePatchEmail,
+            UsersMiddleware.validatePatchDid,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
             permissionMiddleware.minimumPermissionLevelRequired(
                 PermissionLevel.PAID_PERMISSION
@@ -88,6 +89,17 @@ export class UsersRoutes extends CommonRoutesConfig {
             ),
             UsersController.updatePermissionLevel,
         ]);
+
+        /*
+        this.app.put(`/users/:did/permissionLevel/:permissionLevel`, [
+            jwtMiddleware.validJWTNeeded,
+            permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
+            permissionMiddleware.minimumPermissionLevelRequired(
+                PermissionLevel.FREE_PERMISSION
+            ),
+            UsersController.updatePermissionLevel,
+        ]);
+        */
 
         return this.app;
     }

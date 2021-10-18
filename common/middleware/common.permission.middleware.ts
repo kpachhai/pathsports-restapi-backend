@@ -15,9 +15,17 @@ class CommonPermissionMiddleware {
                 const userPermissionLevel = parseInt(
                     res.locals.jwt.permissionLevel
                 );
+                // console.log('userPermissionLevel: ', userPermissionLevel);
+                // console.log(
+                //     'requiredPermissionLevel: ',
+                //     requiredPermissionLevel
+                // );
+
                 if (userPermissionLevel & requiredPermissionLevel) {
+                    // console.log('permission level is appropriate');
                     next();
                 } else {
+                    // console.log('permission level is inappropriate');
                     res.status(403).send();
                 }
             } catch (e) {
@@ -36,6 +44,28 @@ class CommonPermissionMiddleware {
             req.params &&
             req.params.userId &&
             req.params.userId === res.locals.jwt.userId
+        ) {
+            return next();
+        } else {
+            if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
+                return next();
+            } else {
+                return res.status(403).send();
+            }
+        }
+    }
+
+    async onlySamePlayerOrAdminCanDoThisAction(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        const userPermissionLevel = parseInt(res.locals.jwt.permissionLevel);
+
+        if (
+            req.params &&
+            req.params.playerDid &&
+            req.params.playerDid === res.locals.jwt.did
         ) {
             return next();
         } else {

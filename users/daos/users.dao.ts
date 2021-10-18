@@ -12,7 +12,7 @@ class UsersDao {
 
     userSchema = new this.Schema({
         _id: String,
-        email: String,
+        did: String,
         password: { type: String, select: false },
         firstName: String,
         lastName: String,
@@ -36,13 +36,13 @@ class UsersDao {
         return userId;
     }
 
-    async getUserByEmail(email: string) {
-        return this.User.findOne({ email: email }).exec();
+    async getUserByDid(did: string) {
+        return this.User.findOne({ did: did }).exec();
     }
 
-    async getUserByEmailWithPassword(email: string) {
-        return this.User.findOne({ email: email })
-            .select('_id email permissionLevel +password')
+    async getUserByDidWithPassword(did: string) {
+        return this.User.findOne({ did: did })
+            .select('_id did permissionLevel +password')
             .exec();
     }
 

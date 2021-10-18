@@ -8,11 +8,11 @@ class AuthMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        if (req.body && req.body.email && req.body.password) {
+        if (req.body && req.body.did && req.body.password) {
             next();
         } else {
             res.status(400).send({
-                errors: ['Missing required fields: email and password'],
+                errors: ['Missing required fields: did and password'],
             });
         }
     }
@@ -22,26 +22,27 @@ class AuthMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        const user: any = await usersService.getUserByEmailWithPassword(
-            req.body.email
+        const user: any = await usersService.getUserByDidWithPassword(
+            req.body.did
         );
         if (user) {
-            const passwordHash = user.password;
-            if (await argon2.verify(passwordHash, req.body.password)) {
-                req.body = {
-                    userId: user._id,
-                    email: user.email,
-                    provider: 'email',
-                    permissionLevel: user.permissionLevel,
-                };
-                return next();
-            } else {
-                res.status(400).send({
-                    errors: ['Invalid email and/or password'],
-                });
-            }
+            // const passwordHash = user.password;
+            // if (await argon2.verify(passwordHash, req.body.password)) {
+            req.body = {
+                userId: user._id,
+                did: user.did,
+                // provider: 'did',
+                password: req.body.password,
+                permissionLevel: user.permissionLevel,
+            };
+            return next();
+            // } else {
+            //     res.status(400).send({
+            //         errors: ['Invalid did and/or password'],
+            //     });
+            // }
         } else {
-            res.status(400).send({ errors: ['Invalid email and/or password'] });
+            res.status(400).send({ errors: ['Invalid did and/or password'] });
         }
     }
 }

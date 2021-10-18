@@ -9,8 +9,10 @@ class BodyValidationMiddleware {
     ) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
+            // console.log('verifyBodyFields Errors');
             return res.status(400).send({ errors: errors.array() });
         }
+        // console.log('verifyBodyFields Success');
         next();
     }
 }

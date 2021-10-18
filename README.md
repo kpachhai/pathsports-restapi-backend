@@ -28,6 +28,12 @@ cp .env.example .env
 
 -   Modify .env file with your own values
 
+-   [OPTIONAL]: If you want to remove previous mongodb data and start fresh, remove the mongodb directory
+
+```
+rm -rf ~/.pathsports-mongodb-data
+```
+
 -   Start API server
 
 ```
@@ -57,7 +63,7 @@ curl --request POST \
   --url http://localhost:3000/users \
   --header 'Content-Type: application/json' \
   --data-raw '{
-	"email": "waqas.ahmed@tuum.tech",
+	"did": "did:elastos:RaNd0MdId",
 	"password": "P@ssw0rd"
 }'
 ```
@@ -69,7 +75,7 @@ curl --request POST \
   --url http://localhost:3000/auth \
   --header 'Content-Type: application/json' \
   --data-raw '{
-	"email": "waqas.ahmed@tuum.tech",
+	"did": "did:elastos:RaNd0MdId",
 	"password": "P@ssw0rd"
 }'
 ```
@@ -81,7 +87,7 @@ curl --request POST \
   --url http://localhost:3000/players \
   --header 'Authorization: Bearer <ACCESS_TOKEN_HERE>' \
   --header 'Content-Type: application/json' \
-  --data @test/players/newPlayer.json
+  --data-raw @test/players/newPlayer.json
 ```
 
 To update a player,
@@ -91,7 +97,7 @@ curl --request PATCH \
   --url http://localhost:3000/players/did:elastos:<DID_HERE> \
   --header 'Authorization: Bearer <ACCESS_TOKEN_HERE>' \
   --header 'Content-Type: application/json' \
-  --data @test/players/updatePlayer.json
+  --data-raw @test/players/updatePlayer.json
 ```
 
 To add new stats,
@@ -101,7 +107,7 @@ curl --request PATCH \
   --url http://localhost:3000/players/did:elastos:<DID_HERE>/stats \
   --header 'Authorization: Bearer <ACCESS_TOKEN_HERE>' \
   --header 'Content-Type: application/json' \
-  --data @test/players/newStats.json
+  --data-raw @test/players/newStats.json
 ```
 
 # Deploy to production

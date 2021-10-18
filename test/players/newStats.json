@@ -1,46 +1,21 @@
 {
-    "team": {
-        "did": "did:elastos:teamDid",
-        "id": 60,
-        "name": "Paris Saint Germain",
-        "logo": "https://media.api-sports.io/football/teams/85.png"
+    "match": {
+        "match_date": "2021-12-05",
+        "opponent_team": "Montpellier",
+        "team_score": 2,
+        "opponent_score": 2,
+        "league": ""
     },
-    "league": {
-        "did": "did:elastos:leagueDid",
-        "id": 61,
-        "name": "Ligue 1",
-        "country": "France",
-        "logo": "https://media.api-sports.io/football/leagues/61.png",
-        "flag": "https://media.api-sports.io/flags/fr.svg",
-        "season": 2020
-    },
-    "games": {
-        "position": "Attacker",
-        "captain": false
-    },
-    "shots": {
-        "total": 53,
-        "on": 21
-    },
-    "goals": {
-        "total": 9,
-        "assists": 5,
-        "saves": null
-    },
-    "fouls": {
-        "drawn": 67,
-        "committed": 33
-    },
-    "cards": {
-        "yellow": 6,
-        "yellowred": 1,
-        "red": 1
-    },
-    "penalty": {
-        "won": null,
-        "commited": null,
-        "scored": 5,
-        "missed": 1,
-        "saved": null
+    "football": {
+        "assists": 0,
+        "fouls_suffered": 0,
+        "fouls_committed": 1,
+        "total_goals": 0,
+        "offsides": 0,
+        "red_cards": 0,
+        "shots": 1,
+        "shots_on_target": 0,
+        "starts": 0,
+        "yellow_cards": 1
     }
 }

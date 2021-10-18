@@ -18,7 +18,7 @@ class MongooseService {
         poolSize: 25,
         autoIndex: false,
         authSource: 'admin',
-        writeConcern: 'majority',
+        // writeConcern: 'majority',
         serverSelectionTimeoutMS: 5000,
         useFindAndModify: false,
     };

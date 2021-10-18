@@ -3,9 +3,7 @@ services:
     mongo:
         image: mongo
         volumes:
-            - ${HOME}/.pathsports-data/pathsports-mongo-data:/data/db
-        # volumes:
-        #   - ./data:/data/db
+            - ${HOME}/.pathsports-mongodb-data:/data/db
         ports:
             - 37018:27017
         environment:

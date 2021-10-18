@@ -1,5 +1,5 @@
 export interface PutUserDto {
-    email: string;
+    did: string;
     password: string;
     firstName: string;
     lastName: string;

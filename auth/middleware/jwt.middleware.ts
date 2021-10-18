@@ -14,8 +14,10 @@ class JwtMiddleware {
         next: express.NextFunction
     ) {
         if (req.body && req.body.refreshToken) {
+            // console.log('verifyRefreshBodyField success');
             return next();
         } else {
+            // console.log('verifyRefreshBodyField error');
             return res
                 .status(400)
                 .send({ errors: ['Missing required field: refreshToken'] });
@@ -27,25 +29,27 @@ class JwtMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        const user: any = await usersService.getUserByEmailWithPassword(
-            res.locals.jwt.email
+        // console.log('validRefreshNeeded starts');
+        const user: any = await usersService.getUserByDidWithPassword(
+            res.locals.jwt.did
         );
         const salt = crypto.createSecretKey(
             Buffer.from(res.locals.jwt.refreshKey.data)
         );
         const hash = crypto
             .createHmac('sha512', salt)
-            .update(res.locals.jwt.userId + jwtSecret)
+            .update(res.locals.jwt.did + jwtSecret)
             .digest('base64');
         if (hash === req.body.refreshToken) {
             req.body = {
                 userId: user._id,
-                email: user.email,
-                provider: 'email',
+                did: user.did,
+                // provider: 'email', waqas
                 permissionLevel: user.permissionLevel,
             };
             return next();
         } else {
+            // console.log('validRefreshNeeded ends');
             return res.status(400).send({ errors: ['Invalid refresh token'] });
         }
     }
@@ -59,18 +63,22 @@ class JwtMiddleware {
             try {
                 const authorization = req.headers['authorization'].split(' ');
                 if (authorization[0] !== 'Bearer') {
+                    // console.log('validJWTNeeded error');
                     return res.status(401).send();
                 } else {
                     res.locals.jwt = jwt.verify(
                         authorization[1],
                         jwtSecret
                     ) as Jwt;
+                    // console.log('validJWTNeeded success', res.locals.jwt);
                     next();
                 }
             } catch (err) {
+                // console.log('validJWTNeeded caught error');
                 return res.status(403).send();
             }
         } else {
+            // console.log('validJWTNeeded auth header not found');
             return res.status(401).send();
         }
     }

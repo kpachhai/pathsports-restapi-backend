@@ -7,39 +7,40 @@ class UsersMiddleware {
         res: express.Response,
         next: express.NextFunction
     ) {
-        if (req.body && req.body.email && req.body.password) {
+        if (req.body && req.body.did && req.body.password) {
             next();
         } else {
             res.status(400).send({
-                errors: ['Missing required fields: email and password'],
+                errors: ['Missing required fields: did and password'],
             });
         }
     }
 
-    async validateSameEmailDoesntExist(
+    async validateSameDidDoesntExist(
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
     ) {
-        const user = await userService.getUserByEmail(req.body.email);
+        const user = await userService.getUserByDid(req.body.did);
         if (user) {
-            res.status(400).send({ errors: ['User email already exists'] });
+            res.status(400).send({ errors: ['User did already exists'] });
         } else {
             next();
         }
     }
 
-    async validateSameEmailBelongToSameUser(
+    async validateSameDidBelongToSameUser(
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
     ) {
-        const user = await userService.getUserByEmail(req.body.email);
+        const user = await userService.getUserByDid(req.body.did);
         if (user && user.id === req.params.userId) {
             res.locals.user = user;
+            // console.log('validateSameDidBelongToSameUser Success');
             next();
         } else {
-            res.status(400).send({ errors: ['Invalid email'] });
+            res.status(400).send({ errors: ['Invalid did'] });
         }
     }
 
@@ -57,13 +58,13 @@ class UsersMiddleware {
         }
     }
 
-    validatePatchEmail = async (
+    validatePatchDid = async (
         req: express.Request,
         res: express.Response,
         next: express.NextFunction
     ) => {
-        if (req.body.email) {
-            this.validateSameEmailBelongToSameUser(req, res, next);
+        if (req.body.did) {
+            this.validateSameDidBelongToSameUser(req, res, next);
         } else {
             next();
         }

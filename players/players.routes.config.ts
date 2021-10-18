@@ -17,14 +17,13 @@ export class PlayersRoutes extends CommonRoutesConfig {
     configureRoutes(): express.Application {
         this.app
             .route(`/players`)
-            .all(
+            .get(
                 jwtMiddleware.validJWTNeeded,
-                permissionMiddleware.onlyAdminCanDoThisAction
+                permissionMiddleware.onlyAdminCanDoThisAction,
+                PlayersController.listPlayers
             )
-            .get(PlayersController.listPlayers)
             .post(
                 PlayersMiddleware.validateRequiredPlayerBodyFields,
-                // PlayersMiddleware.validateSameEmailDoesntExist,
                 PlayersMiddleware.validateSameDidDoesntExist,
                 PlayersController.createPlayer
             );
@@ -34,8 +33,8 @@ export class PlayersRoutes extends CommonRoutesConfig {
             .route(`/players/:playerDid`)
             .all(
                 PlayersMiddleware.validatePlayerExists,
-                jwtMiddleware.validJWTNeeded
-                // permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction
+                jwtMiddleware.validJWTNeeded,
+                permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction
             )
             .get(PlayersController.getPlayerByDid)
             .delete(PlayersController.removePlayer);
@@ -52,16 +51,17 @@ export class PlayersRoutes extends CommonRoutesConfig {
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             // PlayersMiddleware.validateSameEmailBelongToSameUser,
             // PlayersMiddleware.playerCantChangePermission,
-            // permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction,
-            // permissionMiddleware.minimumPermissionLevelRequired(
-            //     PermissionLevel.PAID_PERMISSION
-            // ),
+            permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction,
+            permissionMiddleware.minimumPermissionLevelRequired(
+                PermissionLevel.PAID_PERMISSION
+            ),
             PlayersController.put,
         ]);
 
         this.app.patch(`/players/:playerDid/stats`, [
             jwtMiddleware.validJWTNeeded,
             BodyValidationMiddleware.verifyBodyFieldsErrors,
+            permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction,
             PlayersController.patchStats,
         ]);
 
@@ -77,24 +77,12 @@ export class PlayersRoutes extends CommonRoutesConfig {
             // body('permissionLevel').isInt().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             // PlayersMiddleware.validatePatchEmail,
-            // permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction,
-            // permissionMiddleware.minimumPermissionLevelRequired(
-            //     PermissionLevel.PAID_PERMISSION
-            // ),
+            permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction,
+            permissionMiddleware.minimumPermissionLevelRequired(
+                PermissionLevel.PAID_PERMISSION
+            ),
             PlayersController.patch,
         ]);
-
-        /**
-         * This route is currently not requiring extra permissions. Please update it for admin usage in your own application.
-         */
-        // this.app.put(`/players/:playerId/permissionLevel/:permissionLevel`, [
-        //     jwtMiddleware.validJWTNeeded,
-        //     // permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction,
-        //     permissionMiddleware.minimumPermissionLevelRequired(
-        //         PermissionLevel.FREE_PERMISSION
-        //     ),
-        //     PlayersController.updatePermissionLevel,
-        // ]);
 
         return this.app;
     }

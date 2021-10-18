@@ -6,8 +6,8 @@ import { PatchUserDto } from '../dto/patch.user.dto';
 
 class UsersService implements CRUD {
     async create(resource: CreateUserDto) {
-        // resource.permissionLevel = 1;
-        resource.permissionLevel = 2147483647;
+        resource.permissionLevel = 1;
+        // resource.permissionLevel = 2147483647;
         return UsersDao.addUser(resource);
     }
 
@@ -35,11 +35,11 @@ class UsersService implements CRUD {
         return UsersDao.updateUserById(id, resource);
     }
 
-    async getUserByEmail(email: string) {
-        return UsersDao.getUserByEmail(email);
+    async getUserByDid(did: string) {
+        return UsersDao.getUserByDid(did);
     }
-    async getUserByEmailWithPassword(email: string) {
-        return UsersDao.getUserByEmailWithPassword(email);
+    async getUserByDidWithPassword(did: string) {
+        return UsersDao.getUserByDidWithPassword(did);
     }
 }
 
