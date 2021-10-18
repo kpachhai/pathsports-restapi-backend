@@ -7,10 +7,7 @@ describe('Index Test', function () {
 
 import init from './00_init.test';
 import supertest from 'supertest';
-// import app from '../app';
 import shortid from 'shortid';
-import mongoose from 'mongoose';
-import { log } from 'debug';
 
 let request: supertest.SuperAgentTest;
 let firstUserIdTest = '';
@@ -65,8 +62,6 @@ const getFirstUserId = async (id = '') => {
 };
 
 const getAccessToken = async (_accessToken = '') => {
-    // console.log('accessToken: ', accessToken);
-
     if (accessToken != '' && _accessToken == '') {
         return accessToken;
     }
@@ -97,23 +92,7 @@ const getPlayerAccessToken = async () => {
 })();
 
 describe('setup test cases', function () {
-    // before(async function () {
-    //     request = await getSuperAgentRequest();
-    //     // request = supertest.agent(app);
-    // });
-    // after(function (done) {
-    //     // shut down the Express.js server, close our MongoDB connection, then tell Mocha we're done:
-    //     app.close(() => {
-    //         mongoose.connection.close(done);
-    //     });
-    //     // setTimeout(() => {
-    //     //     console.log('After from App is called.');
-    //     //     closeApp(done);
-    //     // }, 30000);
-    // });
-
     it('should allow a POST to /users', async function () {
-        // const res = await request.post('/users').send(firstUserBody);
         const res = await createUser(firstUserBody);
 
         expect(res.status).to.equal(201);
@@ -124,7 +103,6 @@ describe('setup test cases', function () {
     });
 
     it('should allow a POST to /auth', async function () {
-        // const res = await request.post('/auth').send(firstUserBody);
         let tempUser = firstUserBody;
         tempUser.password = tempPassword;
         const res = await generateAuthToken(firstUserBody);
@@ -138,7 +116,6 @@ describe('setup test cases', function () {
     });
 
     it('should be able to regenerate auth token with new password', async function () {
-        // const res = await request.post('/auth').send(firstUserBody);
         const res = await generateAuthToken(firstUserBody);
 
         expect(res.status).to.equal(201);
@@ -165,7 +142,6 @@ describe('setup test cases', function () {
         expect(resAuth2.body.accessToken).to.be.a('string');
         adminAccessToken = resAuth2.body.accessToken;
         expect(resAuth2.status).to.equal(201);
-        // expect(res.status).to.equal(204);
     });
 
     it('should be able to generate player access token for player testing', async function () {
@@ -184,7 +160,6 @@ describe('setup test cases', function () {
         expect(resAuth2.body.accessToken).to.be.a('string');
         playerAccessToken = resAuth2.body.accessToken;
         expect(resAuth2.status).to.equal(201);
-        // expect(res.status).to.equal(204);
     });
 });
 
@@ -198,12 +173,10 @@ const getFirstPlayerId = async (id = '') => {
 };
 
 export default {
-    // getSuperAgentRequest,
     firstUserBody,
     getFirstUserId,
     getAccessToken,
     getRefreshToken,
-    // closeApp,
     firstPlayerBody,
     getFirstPlayerId,
     getAdminAccessToken,

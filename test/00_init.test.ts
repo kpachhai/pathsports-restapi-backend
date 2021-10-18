@@ -6,7 +6,6 @@ let request: supertest.SuperAgentTest;
 const initApp = async () => {
     before(async function () {
         request = await getSuperAgentRequest();
-        // request = supertest.agent(app);
     });
 };
 

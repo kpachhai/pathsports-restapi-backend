@@ -1,25 +1,10 @@
-// import app from '../../app';
 import apptest from './01_app.test';
 import supertest from 'supertest';
 import { expect } from 'chai';
-// import shortid from 'shortid';
-// import mongoose from 'mongoose';
 import init from './00_init.test';
 
-// const firstUserIdTest = apptest.firstUserIdTest;
-// const firstUserBody = apptest.firstUserBody;
-// const accessToken = apptest.accessToken;
-// const refreshToken = apptest.refreshToken;
-
-// let firstUserIdTest = '';
-// const firstUserBody = {
-//     did: `did:elastos:${shortid.generate()}`,
-//     password: 'Sup3rSecret!23',
-// };
-
 let request: supertest.SuperAgentTest;
-// let accessToken = '';
-// let refreshToken = '';
+
 const newFirstName = 'Jose';
 const newFirstName2 = 'Paulo';
 const newLastName2 = 'Faraco';
@@ -29,31 +14,14 @@ const newLastName2 = 'Faraco';
 })();
 
 describe('users test cases', function () {
-    // let request: supertest.SuperAgentTest;
-    // before(async function () {
-    //     request = await apptest.getSuperAgentRequest();
-    //     // request = supertest.agent(app);
-    // });
-    // after(function (done: Mocha.Done) {
-    //     apptest.closeApp(done);
-    // });
-
-    // request = await init.getSuperAgentRequest();
-
     it('should allow a GET from /users/:userId with an access token', async function () {
         const firstUserIdTest = await apptest.getFirstUserId();
         const accessToken = await apptest.getAccessToken();
-
-        // console.log('Waqas: ', firstUserIdTest);
-        // console.log('Waqas2: ', accessToken);
-
-        // console.log('Request: ', request);
 
         const res = await request
             .get(`/users/${firstUserIdTest}`)
             .set({ Authorization: `Bearer ${accessToken}` })
             .send();
-        // console.log('Response:', res);
 
         expect(res.status).to.equal(200);
         expect(res.body).not.to.be.empty;
@@ -80,9 +48,6 @@ describe('users test cases', function () {
             const firstUserIdTest = await apptest.getFirstUserId();
             const accessToken = await apptest.getAccessToken();
 
-            // console.log('Waqas: ', firstUserIdTest);
-            // console.log('Waqas2: ', accessToken);
-
             const res = await request
                 .patch(`/users/${firstUserIdTest}`)
                 .set({
@@ -91,8 +56,6 @@ describe('users test cases', function () {
                 .send({
                     firstName: newFirstName,
                 });
-
-            // console.log('Response Waqas: ', res);
 
             expect(res.status).to.equal(403);
         });
@@ -152,9 +115,6 @@ describe('users test cases', function () {
                 this.timeout(5000);
                 const _refreshToken = await apptest.getRefreshToken();
                 const _accessToken = await apptest.getAccessToken();
-
-                // console.log('_refreshToken: ', _refreshToken);
-                // console.log('_accessToken: ', _accessToken);
 
                 const res = await request
                     .post('/auth/refresh-token')
