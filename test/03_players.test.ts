@@ -5,6 +5,7 @@ import init from './00_init.test';
 
 let request: supertest.SuperAgentTest;
 const newName = 'Awesome Neymar';
+const newFirstName = 'Messi';
 
 (async () => {
     request = await init.getSuperAgentRequest();
@@ -17,6 +18,17 @@ describe('players test cases', function () {
     });
 
     describe('with a valid access token', async function () {
+        it('should disallow a POST to /players with another token', async function () {
+            const accessToken = await apptest.getSecondAccessToken();
+
+            const res = await request
+                .post(`/players`)
+                .set({ Authorization: `Bearer ${accessToken}` })
+                .send(apptest.firstPlayerBody);
+
+            expect(res.status).to.equal(403);
+        });
+
         it('should allow a POST to /players', async function () {
             this.timeout(5000);
             const _accessToken = await apptest.getPlayerAccessToken();
@@ -31,6 +43,22 @@ describe('players test cases', function () {
             expect(res.body).to.be.an('object');
             expect(res.body.id).to.be.an('string');
             await apptest.getFirstPlayerId(res.body.id);
+        });
+
+        it('should disallow a PATCH to /players/:playerDid with another token', async function () {
+            const playerDid = apptest.firstPlayerBody.did;
+            const accessToken = await apptest.getSecondAccessToken();
+
+            const res = await request
+                .patch(`/players/${playerDid}`)
+                .set({
+                    Authorization: `Bearer ${accessToken}`,
+                })
+                .send({
+                    firstName: newFirstName,
+                });
+
+            expect(res.status).to.equal(403);
         });
 
         it('should allow a GET from /players/:playerDid with an access token', async function () {

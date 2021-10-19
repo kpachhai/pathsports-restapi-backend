@@ -23,8 +23,10 @@ export class PlayersRoutes extends CommonRoutesConfig {
                 PlayersController.listPlayers
             )
             .post(
+                jwtMiddleware.validJWTNeeded,
                 PlayersMiddleware.validateRequiredPlayerBodyFields,
                 PlayersMiddleware.validateSameDidDoesntExist,
+                permissionMiddleware.onlyDIDOrAdminCanDoThisAction,
                 PlayersController.createPlayer
             );
 

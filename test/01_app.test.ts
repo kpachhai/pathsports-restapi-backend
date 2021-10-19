@@ -12,9 +12,10 @@ import shortid from 'shortid';
 let request: supertest.SuperAgentTest;
 let firstUserIdTest = '';
 let firstPlayerIdTest = '';
-let accessToken = '';
+let firstUserAccessToken = '';
 let adminAccessToken = '';
 let playerAccessToken = '';
+let secondUserAccessToken = '';
 let refreshToken = '';
 let adminUserId = '';
 let playerUserId = '';
@@ -22,6 +23,11 @@ let playerUserId = '';
 const tempPassword = 'tEmPp@ssw0rd';
 
 const firstUserBody = {
+    did: `did:elastos:${shortid.generate()}`,
+    password: 'Sup3rSecret!23',
+};
+
+const secondUserBody = {
     did: `did:elastos:${shortid.generate()}`,
     password: 'Sup3rSecret!23',
 };
@@ -34,6 +40,7 @@ const adminUserBody = {
 const playerUserBody = {
     did: `did:elastos:${shortid.generate()}`,
     password: 'Sup3rSecret!2345',
+    permissionLevel: 2,
 };
 
 const firstPlayerBody = {
@@ -62,12 +69,21 @@ const getFirstUserId = async (id = '') => {
 };
 
 const getAccessToken = async (_accessToken = '') => {
-    if (accessToken != '' && _accessToken == '') {
-        return accessToken;
+    if (firstUserAccessToken != '' && _accessToken == '') {
+        return firstUserAccessToken;
     }
 
-    accessToken = _accessToken;
-    return accessToken;
+    firstUserAccessToken = _accessToken;
+    return firstUserAccessToken;
+};
+
+const getSecondAccessToken = async (_accessToken = '') => {
+    if (secondUserAccessToken != '' && _accessToken == '') {
+        return secondUserAccessToken;
+    }
+
+    secondUserAccessToken = _accessToken;
+    return secondUserAccessToken;
 };
 
 const getRefreshToken = async (_refreshToken = '') => {
@@ -111,7 +127,7 @@ describe('setup test cases', function () {
         expect(res.body).not.to.be.empty;
         expect(res.body).to.be.an('object');
         expect(res.body.accessToken).to.be.a('string');
-        accessToken = await getAccessToken(res.body.accessToken);
+        firstUserAccessToken = await getAccessToken(res.body.accessToken);
         refreshToken = await getRefreshToken(res.body.refreshToken);
     });
 
@@ -122,7 +138,7 @@ describe('setup test cases', function () {
         expect(res.body).not.to.be.empty;
         expect(res.body).to.be.an('object');
         expect(res.body.accessToken).to.be.a('string');
-        accessToken = await getAccessToken(res.body.accessToken);
+        firstUserAccessToken = await getAccessToken(res.body.accessToken);
         refreshToken = await getRefreshToken(res.body.refreshToken);
     });
 
@@ -150,16 +166,18 @@ describe('setup test cases', function () {
 
         playerUserId = resUser.body.id;
 
-        const res = await request
-            .put(`/users/${resUser.body.id}/permissionLevel/2`)
-            .set({
-                Authorization: `Bearer ${resAuth.body.accessToken}`,
-            })
-            .send({});
-        const resAuth2 = await generateAuthToken(playerUserBody);
-        expect(resAuth2.body.accessToken).to.be.a('string');
-        playerAccessToken = resAuth2.body.accessToken;
-        expect(resAuth2.status).to.equal(201);
+        expect(resAuth.body.accessToken).to.be.a('string');
+        playerAccessToken = resAuth.body.accessToken;
+        expect(resAuth.status).to.equal(201);
+    });
+
+    it('should be able to generate second user access token for player testing', async function () {
+        const resUser = await createUser(secondUserBody);
+        const resAuth = await generateAuthToken(secondUserBody);
+
+        expect(resAuth.body.accessToken).to.be.a('string');
+        secondUserAccessToken = resAuth.body.accessToken;
+        expect(resAuth.status).to.equal(201);
     });
 });
 
@@ -183,4 +201,6 @@ export default {
     getPlayerAccessToken,
     playerUserId,
     adminUserId,
+    getSecondAccessToken,
+    secondUserBody,
 };

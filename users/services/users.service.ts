@@ -3,11 +3,14 @@ import { CRUD } from '../../common/interfaces/crud.interface';
 import { CreateUserDto } from '../dto/create.user.dto';
 import { PutUserDto } from '../dto/put.user.dto';
 import { PatchUserDto } from '../dto/patch.user.dto';
+import { PermissionLevel } from '../../common/middleware/common.permissionlevel.enum';
 
 class UsersService implements CRUD {
     async create(resource: CreateUserDto) {
-        resource.permissionLevel = 1;
-        // resource.permissionLevel = 2147483647;
+        if (!resource.permissionLevel) {
+            resource.permissionLevel = PermissionLevel.FREE_PERMISSION;
+        }
+
         return UsersDao.addUser(resource);
     }
 

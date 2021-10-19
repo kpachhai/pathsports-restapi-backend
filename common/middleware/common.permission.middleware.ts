@@ -77,6 +77,24 @@ class CommonPermissionMiddleware {
         }
     }
 
+    async onlyDIDOrAdminCanDoThisAction(
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) {
+        const userPermissionLevel = parseInt(res.locals.jwt.permissionLevel);
+
+        if (req.body && req.body.did && req.body.did === res.locals.jwt.did) {
+            return next();
+        } else {
+            if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
+                return next();
+            } else {
+                return res.status(403).send();
+            }
+        }
+    }
+
     async onlyAdminCanDoThisAction(
         req: express.Request,
         res: express.Response,
