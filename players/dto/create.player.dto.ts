@@ -2,6 +2,7 @@ import { MatchedDataOptions } from 'express-validator';
 
 export interface CreatePlayerDto {
     did: string;
+    summary?: string;
     firstName?: string;
     lastName?: string;
     name?: string;

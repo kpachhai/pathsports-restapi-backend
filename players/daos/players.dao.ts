@@ -113,6 +113,7 @@ class PlayersDao {
     playerSchema = new this.Schema({
         _id: String,
         did: String,
+        summary: String,
         // email: String,
         // password: { type: String, select: false },
         firstName: String,

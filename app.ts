@@ -50,9 +50,9 @@ routes.push(new UsersRoutes(app));
 routes.push(new AuthRoutes(app));
 
 app.get('/', (req: express.Request, res: express.Response) => {
-    res.status(200).send(
-        `Pathsports server running at http://localhost:${port}`
-    );
+    res.status(200).send({
+        message: `Pathsports server running at http://localhost:${port}`,
+    });
 });
 export default server.listen(port, () => {
     debugLog(`Server running at http://localhost:${port}`);
