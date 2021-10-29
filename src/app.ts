@@ -20,8 +20,15 @@ const port = 3000;
 const routes: CommonRoutesConfig[] = [];
 const debugLog: debug.IDebugger = debug('app');
 
-app.use(bodyparser.json());
-app.use(cors());
+app.use(express.json({ limit: '32mb' }));
+app.use(
+    express.urlencoded({
+        limit: '32mb',
+        extended: true,
+        parameterLimit: 1000000
+    })
+);
+app.use(cors({ origin: true }));
 app.use(helmet());
 
 const loggerOptions: expressWinston.LoggerOptions = {
