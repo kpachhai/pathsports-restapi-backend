@@ -16,7 +16,7 @@ class UsersDao {
         password: { type: String, select: false },
         firstName: String,
         lastName: String,
-        permissionLevel: Number,
+        permissionLevel: Number
     });
 
     User = mongooseService.getMongoose().model('Users', this.userSchema);
@@ -30,7 +30,7 @@ class UsersDao {
         const user = new this.User({
             _id: userId,
             permissionLevel: 1,
-            ...userFields,
+            ...userFields
         });
         await user.save();
         return userId;
@@ -41,9 +41,7 @@ class UsersDao {
     }
 
     async getUserByDidWithPassword(did: string) {
-        return this.User.findOne({ did })
-            .select('_id did permissionLevel +password')
-            .exec();
+        return this.User.findOne({ did }).select('_id did permissionLevel +password').exec();
     }
 
     async removeUserById(userId: string) {
@@ -61,15 +59,8 @@ class UsersDao {
             .exec();
     }
 
-    async updateUserById(
-        userId: string,
-        userFields: PatchUserDto | PutUserDto
-    ) {
-        const existingUser = await this.User.findOneAndUpdate(
-            { _id: userId },
-            { $set: userFields },
-            { new: true }
-        ).exec();
+    async updateUserById(userId: string, userFields: PatchUserDto | PutUserDto) {
+        const existingUser = await this.User.findOneAndUpdate({ _id: userId }, { $set: userFields }, { new: true }).exec();
 
         return existingUser;
     }

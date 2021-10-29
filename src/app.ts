@@ -29,11 +29,7 @@ app.use(helmet());
 
 const loggerOptions: expressWinston.LoggerOptions = {
     transports: [new winston.transports.Console()],
-    format: winston.format.combine(
-        winston.format.json(),
-        winston.format.prettyPrint(),
-        winston.format.colorize({ all: true })
-    ),
+    format: winston.format.combine(winston.format.json(), winston.format.prettyPrint(), winston.format.colorize({ all: true }))
 };
 
 if (!process.env.DEBUG) {
@@ -51,7 +47,7 @@ routes.push(new AuthRoutes(app));
 
 app.get('/', (req: express.Request, res: express.Response) => {
     res.status(200).send({
-        message: `Pathsports server running at http://localhost:${port}`,
+        message: `Pathsports server running at http://localhost:${port}`
     });
 });
 export default server.listen(port, () => {

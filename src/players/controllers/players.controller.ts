@@ -37,9 +37,7 @@ class PlayersController {
     }
 
     async patchStats(req: express.Request, res: express.Response) {
-        log(
-            await playersService.patchStatsByDid(req.params.playerDid, req.body)
-        );
+        log(await playersService.patchStatsByDid(req.params.playerDid, req.body));
         res.status(204).send();
     }
 

@@ -17,35 +17,21 @@ export class UsersRoutes extends CommonRoutesConfig {
     configureRoutes(): express.Application {
         this.app
             .route(`/users`)
-            .get(
-                jwtMiddleware.validJWTNeeded,
-                permissionMiddleware.onlyAdminCanDoThisAction,
-                UsersController.listUsers
-            )
-            .post(
-                UsersMiddleware.validateRequiredUserBodyFields,
-                UsersMiddleware.validateSameDidDoesntExist,
-                UsersController.createUser
-            );
+            .get(jwtMiddleware.validJWTNeeded, permissionMiddleware.onlyAdminCanDoThisAction, UsersController.listUsers)
+            .post(UsersMiddleware.validateRequiredUserBodyFields, UsersMiddleware.validateSameDidDoesntExist, UsersController.createUser);
 
         // routes with userId as identifier
         this.app.param(`userId`, UsersMiddleware.extractUserId);
         this.app
             .route(`/users/:userId`)
-            .all(
-                UsersMiddleware.validateUserExists,
-                jwtMiddleware.validJWTNeeded,
-                permissionMiddleware.onlySameUserOrAdminCanDoThisAction
-            )
+            .all(UsersMiddleware.validateUserExists, jwtMiddleware.validJWTNeeded, permissionMiddleware.onlySameUserOrAdminCanDoThisAction)
             .get(UsersController.getUserById)
             .delete(UsersController.removeUser);
 
         this.app.put(`/users/:userId`, [
             jwtMiddleware.validJWTNeeded,
             body('did').isString(),
-            body('password')
-                .isLength({ min: 5 })
-                .withMessage('Must include password (5+ characters)'),
+            body('password').isLength({ min: 5 }).withMessage('Must include password (5+ characters)'),
             body('firstName').isString(),
             body('lastName').isString(),
             body('permissionLevel').isInt(),
@@ -53,29 +39,22 @@ export class UsersRoutes extends CommonRoutesConfig {
             UsersMiddleware.validateSameDidBelongToSameUser,
             UsersMiddleware.userCantChangePermission,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-            permissionMiddleware.minimumPermissionLevelRequired(
-                PermissionLevel.PAID_PERMISSION
-            ),
-            UsersController.put,
+            permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.PAID_PERMISSION),
+            UsersController.put
         ]);
 
         this.app.patch(`/users/:userId`, [
             jwtMiddleware.validJWTNeeded,
             body('did').isString().optional(),
-            body('password')
-                .isLength({ min: 5 })
-                .withMessage('Password must be 5+ characters')
-                .optional(),
+            body('password').isLength({ min: 5 }).withMessage('Password must be 5+ characters').optional(),
             body('firstName').isString().optional(),
             body('lastName').isString().optional(),
             body('permissionLevel').isInt().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             UsersMiddleware.validatePatchDid,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-            permissionMiddleware.minimumPermissionLevelRequired(
-                PermissionLevel.PAID_PERMISSION
-            ),
-            UsersController.patch,
+            permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.PAID_PERMISSION),
+            UsersController.patch
         ]);
 
         /**
@@ -84,10 +63,8 @@ export class UsersRoutes extends CommonRoutesConfig {
         this.app.put(`/users/:userId/permissionLevel/:permissionLevel`, [
             jwtMiddleware.validJWTNeeded,
             permissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-            permissionMiddleware.minimumPermissionLevelRequired(
-                PermissionLevel.FREE_PERMISSION
-            ),
-            UsersController.updatePermissionLevel,
+            permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.FREE_PERMISSION),
+            UsersController.updatePermissionLevel
         ]);
 
         /*

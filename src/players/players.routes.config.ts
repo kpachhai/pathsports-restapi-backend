@@ -17,11 +17,7 @@ export class PlayersRoutes extends CommonRoutesConfig {
     configureRoutes(): express.Application {
         this.app
             .route(`/players`)
-            .get(
-                jwtMiddleware.validJWTNeeded,
-                permissionMiddleware.onlyAdminCanDoThisAction,
-                PlayersController.listPlayers
-            )
+            .get(jwtMiddleware.validJWTNeeded, permissionMiddleware.onlyAdminCanDoThisAction, PlayersController.listPlayers)
             .post(
                 jwtMiddleware.validJWTNeeded,
                 PlayersMiddleware.validateRequiredPlayerBodyFields,
@@ -33,11 +29,7 @@ export class PlayersRoutes extends CommonRoutesConfig {
         this.app.param(`playerDid`, PlayersMiddleware.extractPlayerDid);
         this.app
             .route(`/players/:playerDid`)
-            .all(
-                PlayersMiddleware.validatePlayerExists,
-                jwtMiddleware.validJWTNeeded,
-                permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction
-            )
+            .all(PlayersMiddleware.validatePlayerExists, jwtMiddleware.validJWTNeeded, permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction)
             .get(PlayersController.getPlayerByDid)
             .delete(PlayersController.removePlayer);
 
@@ -54,17 +46,15 @@ export class PlayersRoutes extends CommonRoutesConfig {
             // PlayersMiddleware.validateSameEmailBelongToSameUser,
             // PlayersMiddleware.playerCantChangePermission,
             permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction,
-            permissionMiddleware.minimumPermissionLevelRequired(
-                PermissionLevel.PAID_PERMISSION
-            ),
-            PlayersController.put,
+            permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.PAID_PERMISSION),
+            PlayersController.put
         ]);
 
         this.app.patch(`/players/:playerDid/stats`, [
             jwtMiddleware.validJWTNeeded,
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction,
-            PlayersController.patchStats,
+            PlayersController.patchStats
         ]);
 
         this.app.patch(`/players/:playerDid`, [
@@ -80,10 +70,8 @@ export class PlayersRoutes extends CommonRoutesConfig {
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             // PlayersMiddleware.validatePatchEmail,
             permissionMiddleware.onlySamePlayerOrAdminCanDoThisAction,
-            permissionMiddleware.minimumPermissionLevelRequired(
-                PermissionLevel.PAID_PERMISSION
-            ),
-            PlayersController.patch,
+            permissionMiddleware.minimumPermissionLevelRequired(PermissionLevel.PAID_PERMISSION),
+            PlayersController.patch
         ]);
 
         return this.app;

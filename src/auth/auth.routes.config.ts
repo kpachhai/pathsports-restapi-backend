@@ -10,17 +10,8 @@ export class AuthRoutes extends CommonRoutesConfig {
     }
 
     configureRoutes(): express.Application {
-        this.app.post(`/auth`, [
-            authMiddleware.validateBodyRequest,
-            authMiddleware.verifyUserPassword,
-            authController.createJWT,
-        ]);
-        this.app.post(`/auth/refresh-token`, [
-            jwtMiddleware.validJWTNeeded,
-            jwtMiddleware.verifyRefreshBodyField,
-            jwtMiddleware.validRefreshNeeded,
-            authController.createJWT,
-        ]);
+        this.app.post(`/auth`, [authMiddleware.validateBodyRequest, authMiddleware.verifyUserPassword, authController.createJWT]);
+        this.app.post(`/auth/refresh-token`, [jwtMiddleware.validJWTNeeded, jwtMiddleware.verifyRefreshBodyField, jwtMiddleware.validRefreshNeeded, authController.createJWT]);
         return this.app;
     }
 }

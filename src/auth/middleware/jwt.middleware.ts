@@ -8,34 +8,20 @@ import usersService from '../../users/services/users.service';
 const jwtSecret: string = process.env.JWT_SECRET;
 
 class JwtMiddleware {
-    verifyRefreshBodyField(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    verifyRefreshBodyField(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (req.body && req.body.refreshToken) {
             // console.log('verifyRefreshBodyField success');
             return next();
         } else {
             // console.log('verifyRefreshBodyField error');
-            return res
-                .status(400)
-                .send({ errors: ['Missing required field: refreshToken'] });
+            return res.status(400).send({ errors: ['Missing required field: refreshToken'] });
         }
     }
 
-    async validRefreshNeeded(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    async validRefreshNeeded(req: express.Request, res: express.Response, next: express.NextFunction) {
         // console.log('validRefreshNeeded starts');
-        const user: any = await usersService.getUserByDidWithPassword(
-            res.locals.jwt.did
-        );
-        const salt = crypto.createSecretKey(
-            Buffer.from(res.locals.jwt.refreshKey.data)
-        );
+        const user: any = await usersService.getUserByDidWithPassword(res.locals.jwt.did);
+        const salt = crypto.createSecretKey(Buffer.from(res.locals.jwt.refreshKey.data));
         const hash = crypto
             .createHmac('sha512', salt)
             .update(res.locals.jwt.did + jwtSecret)
@@ -45,7 +31,7 @@ class JwtMiddleware {
                 userId: user._id,
                 did: user.did,
                 // provider: 'email', waqas
-                permissionLevel: user.permissionLevel,
+                permissionLevel: user.permissionLevel
             };
             return next();
         } else {
@@ -54,11 +40,7 @@ class JwtMiddleware {
         }
     }
 
-    validJWTNeeded(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    validJWTNeeded(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (req.headers.authorization) {
             try {
                 const authorization = req.headers.authorization.split(' ');
@@ -66,10 +48,7 @@ class JwtMiddleware {
                     // console.log('validJWTNeeded error');
                     return res.status(401).send();
                 } else {
-                    res.locals.jwt = jwt.verify(
-                        authorization[1],
-                        jwtSecret
-                    ) as Jwt;
+                    res.locals.jwt = jwt.verify(authorization[1], jwtSecret) as Jwt;
                     // console.log('validJWTNeeded success', res.locals.jwt);
                     next();
                 }

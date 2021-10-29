@@ -7,9 +7,7 @@ const MONGO_USERNAME = process.env.MONGO_USERNAME || 'mongoadmin';
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || 'mongopass';
 const MONGO_HOST = process.env.MONGO_HOST || 'localhost';
 const MONGO_PORT = Number(process.env.MONGO_PORT) || 37018;
-const PRODUCTION = JSON.parse(
-    (process.env.PRODUCTION || 'false').toLowerCase()
-);
+const PRODUCTION = JSON.parse((process.env.PRODUCTION || 'false').toLowerCase());
 
 class MongooseService {
     private count = 0;
@@ -23,7 +21,7 @@ class MongooseService {
         authSource: 'admin',
         // writeConcern: 'majority',
         serverSelectionTimeoutMS: 5000,
-        useFindAndModify: false,
+        useFindAndModify: false
     };
 
     constructor() {
@@ -47,11 +45,7 @@ class MongooseService {
             })
             .catch((err) => {
                 const retrySeconds = 5;
-                log(
-                    `MongoDB connection unsuccessful (will retry #${++this
-                        .count} after ${retrySeconds} seconds):`,
-                    err
-                );
+                log(`MongoDB connection unsuccessful (will retry #${++this.count} after ${retrySeconds} seconds):`, err);
                 setTimeout(this.connectWithRetry, retrySeconds * 1000);
             });
     };

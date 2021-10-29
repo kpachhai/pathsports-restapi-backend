@@ -14,19 +14,14 @@ class AuthController {
         try {
             const refreshId = req.body.did + jwtSecret;
             const salt = crypto.createSecretKey(crypto.randomBytes(16));
-            const hash = crypto
-                .createHmac('sha512', salt)
-                .update(refreshId)
-                .digest('base64');
+            const hash = crypto.createHmac('sha512', salt).update(refreshId).digest('base64');
             req.body.refreshKey = salt.export();
             // console.log('Body for JWT creation: ', req.body);
 
             const token = jwt.sign(req.body, jwtSecret, {
-                expiresIn: tokenExpirationInSeconds,
+                expiresIn: tokenExpirationInSeconds
             });
-            return res
-                .status(201)
-                .send({ accessToken: token, refreshToken: hash });
+            return res.status(201).send({ accessToken: token, refreshToken: hash });
         } catch (err) {
             log('createJWT error: %O', err);
             return res.status(500).send();

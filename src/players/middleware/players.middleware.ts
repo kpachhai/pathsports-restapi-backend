@@ -16,25 +16,17 @@ class PlayersMiddleware {
     //     }
     // }
 
-    async validateRequiredPlayerBodyFields(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    async validateRequiredPlayerBodyFields(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (req.body && req.body.did) {
             next();
         } else {
             res.status(400).send({
-                errors: ['Missing required fields: did'],
+                errors: ['Missing required fields: did']
             });
         }
     }
 
-    async validateSameDidDoesntExist(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    async validateSameDidDoesntExist(req: express.Request, res: express.Response, next: express.NextFunction) {
         const player = await playerService.getPlayerByDid(req.body.did);
         if (player) {
             res.status(400).send({ errors: ['Player DID already exists'] });
@@ -83,26 +75,18 @@ class PlayersMiddleware {
     //     }
     // };
 
-    async validatePlayerExists(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    async validatePlayerExists(req: express.Request, res: express.Response, next: express.NextFunction) {
         const player = await playerService.readByDid(req.params.playerDid);
         if (player) {
             next();
         } else {
             res.status(404).send({
-                errors: [`Player ${req.params.playerDid} not found`],
+                errors: [`Player ${req.params.playerDid} not found`]
             });
         }
     }
 
-    async extractPlayerDid(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    async extractPlayerDid(req: express.Request, res: express.Response, next: express.NextFunction) {
         req.body.did = req.params.playerDid;
         next();
     }

@@ -6,15 +6,9 @@ const log: debug.IDebugger = debug('app:common-permission-middleware');
 
 class CommonPermissionMiddleware {
     minimumPermissionLevelRequired(requiredPermissionLevel: PermissionLevel) {
-        return (
-            req: express.Request,
-            res: express.Response,
-            next: express.NextFunction
-        ) => {
+        return (req: express.Request, res: express.Response, next: express.NextFunction) => {
             try {
-                const userPermissionLevel = parseInt(
-                    res.locals.jwt.permissionLevel
-                );
+                const userPermissionLevel = parseInt(res.locals.jwt.permissionLevel);
                 // console.log('userPermissionLevel: ', userPermissionLevel);
                 // console.log(
                 //     'requiredPermissionLevel: ',
@@ -34,17 +28,9 @@ class CommonPermissionMiddleware {
         };
     }
 
-    async onlySameUserOrAdminCanDoThisAction(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    async onlySameUserOrAdminCanDoThisAction(req: express.Request, res: express.Response, next: express.NextFunction) {
         const userPermissionLevel = parseInt(res.locals.jwt.permissionLevel);
-        if (
-            req.params &&
-            req.params.userId &&
-            req.params.userId === res.locals.jwt.userId
-        ) {
+        if (req.params && req.params.userId && req.params.userId === res.locals.jwt.userId) {
             return next();
         } else {
             if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
@@ -55,18 +41,10 @@ class CommonPermissionMiddleware {
         }
     }
 
-    async onlySamePlayerOrAdminCanDoThisAction(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    async onlySamePlayerOrAdminCanDoThisAction(req: express.Request, res: express.Response, next: express.NextFunction) {
         const userPermissionLevel = parseInt(res.locals.jwt.permissionLevel);
 
-        if (
-            req.params &&
-            req.params.playerDid &&
-            req.params.playerDid === res.locals.jwt.did
-        ) {
+        if (req.params && req.params.playerDid && req.params.playerDid === res.locals.jwt.did) {
             return next();
         } else {
             if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
@@ -77,11 +55,7 @@ class CommonPermissionMiddleware {
         }
     }
 
-    async onlyDIDOrAdminCanDoThisAction(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    async onlyDIDOrAdminCanDoThisAction(req: express.Request, res: express.Response, next: express.NextFunction) {
         const userPermissionLevel = parseInt(res.locals.jwt.permissionLevel);
 
         if (req.body && req.body.did && req.body.did === res.locals.jwt.did) {
@@ -95,11 +69,7 @@ class CommonPermissionMiddleware {
         }
     }
 
-    async onlyAdminCanDoThisAction(
-        req: express.Request,
-        res: express.Response,
-        next: express.NextFunction
-    ) {
+    async onlyAdminCanDoThisAction(req: express.Request, res: express.Response, next: express.NextFunction) {
         const userPermissionLevel = parseInt(res.locals.jwt.permissionLevel);
         if (userPermissionLevel & PermissionLevel.ADMIN_PERMISSION) {
             return next();

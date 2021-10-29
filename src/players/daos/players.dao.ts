@@ -13,14 +13,14 @@ class PlayersDao {
     birthSchema = new this.Schema({
         date: Date,
         place: String,
-        country: String,
+        country: String
     });
 
     socialSchema = new this.Schema({
         instagram: String,
         facebook: String,
         snapchat: String,
-        discord: String,
+        discord: String
     });
 
     statisticsSchema = new this.Schema({
@@ -29,7 +29,7 @@ class PlayersDao {
             opponent_team: String,
             team_score: Number,
             opponent_score: Number,
-            league: String,
+            league: String
         },
         football: {
             assists: Number, // Whole numbers
@@ -41,7 +41,7 @@ class PlayersDao {
             shots: Number, // Whole numbers
             shots_on_target: Number, // Whole numbers
             starts: Number, // Whole numbers
-            yellow_cards: Number, // Whole numbers
+            yellow_cards: Number // Whole numbers
         },
         basketball: {
             three_point_field_goal_percentage: Number, // Decimal (0-100)
@@ -57,8 +57,8 @@ class PlayersDao {
             points: Number, // Whole Number
             rebounds: Number, // Whole Number
             steals: Number, // Whole Number
-            turnovers: Number, //  Whole Number
-        },
+            turnovers: Number //  Whole Number
+        }
     });
     /*
     statisticsSchema = new this.Schema({
@@ -129,7 +129,7 @@ class PlayersDao {
         sport: String,
         team: String,
         social: this.socialSchema,
-        statistics: [this.statisticsSchema],
+        statistics: [this.statisticsSchema]
     });
 
     Player = mongooseService.getMongoose().model('Players', this.playerSchema);
@@ -143,7 +143,7 @@ class PlayersDao {
         const player = new this.Player({
             _id: playerId,
             // permissionLevel: 1,
-            ...playerFields,
+            ...playerFields
         });
         await player.save();
         return playerId;
@@ -155,9 +155,7 @@ class PlayersDao {
     }
 
     async getPlayerByDid(playerDid: string) {
-        return this.Player.findOne({ did: playerDid })
-            .populate('Player')
-            .exec();
+        return this.Player.findOne({ did: playerDid }).populate('Player').exec();
     }
 
     async getPlayers(limit = 25, page = 0) {
@@ -167,28 +165,17 @@ class PlayersDao {
             .exec();
     }
 
-    async updatePlayerByDid(
-        playerDid: string,
-        playerFields: PatchPlayerDto | PutPlayerDto
-    ) {
+    async updatePlayerByDid(playerDid: string, playerFields: PatchPlayerDto | PutPlayerDto) {
         // console.log('playerDid: ', playerDid);
         // console.log('playerFields: ', playerFields);
 
-        const existingPlayer = await this.Player.findOneAndUpdate(
-            { did: playerDid },
-            { $set: playerFields },
-            { new: true }
-        ).exec();
+        const existingPlayer = await this.Player.findOneAndUpdate({ did: playerDid }, { $set: playerFields }, { new: true }).exec();
 
         return existingPlayer;
     }
 
     async addPlayerStatsByDid(playerDid: string, statsFields: PatchPlayerDto) {
-        const existingPlayer = await this.Player.findOneAndUpdate(
-            { did: playerDid },
-            { $addToSet: { statistics: statsFields } },
-            { new: true }
-        ).exec();
+        const existingPlayer = await this.Player.findOneAndUpdate({ did: playerDid }, { $addToSet: { statistics: statsFields } }, { new: true }).exec();
 
         return existingPlayer;
     }
