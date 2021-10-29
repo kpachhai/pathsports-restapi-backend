@@ -64,7 +64,8 @@ curl --request POST \
   --header 'Content-Type: application/json' \
   --data-raw '{
 	"did": "did:elastos:RaNd0MdId",
-	"password": "P@ssw0rd"
+	"password": "P@ssw0rd",
+  "permissionLevel": 2
 }'
 ```
 
