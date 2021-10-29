@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import app from '../app';
+import app from '../src/app';
 
 let request: supertest.SuperAgentTest;
 
@@ -20,5 +20,5 @@ const getSuperAgentRequest = async () => {
 initApp();
 
 export default {
-    getSuperAgentRequest,
+    getSuperAgentRequest
 };

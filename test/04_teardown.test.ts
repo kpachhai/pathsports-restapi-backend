@@ -1,4 +1,4 @@
-import app from '../app';
+import app from '../src/app';
 import mongoose from 'mongoose';
 import apptest from './01_app.test';
 import supertest from 'supertest';
@@ -16,7 +16,7 @@ const cleanUp = () => {
         const resAdmin = await request
             .delete(`/users/${apptest.adminUserId}`)
             .set({
-                Authorization: `Bearer ${await apptest.getAdminAccessToken()}`,
+                Authorization: `Bearer ${await apptest.getAdminAccessToken()}`
             })
             .send();
         expect(resAdmin.status).to.equal(204);
@@ -24,7 +24,7 @@ const cleanUp = () => {
         const resPlayer = await request
             .delete(`/users/${apptest.playerUserId}`)
             .set({
-                Authorization: `Bearer ${await apptest.getPlayerAccessToken()}`,
+                Authorization: `Bearer ${await apptest.getPlayerAccessToken()}`
             })
             .send();
         expect(resPlayer.status).to.equal(204);
