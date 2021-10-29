@@ -7,6 +7,9 @@ const MONGO_USERNAME = process.env.MONGO_USERNAME || 'mongoadmin';
 const MONGO_PASSWORD = process.env.MONGO_PASSWORD || 'mongopass';
 const MONGO_HOST = process.env.MONGO_HOST || 'localhost';
 const MONGO_PORT = Number(process.env.MONGO_PORT) || 37018;
+const PRODUCTION = JSON.parse(
+    (process.env.PRODUCTION || 'false').toLowerCase()
+);
 
 class MongooseService {
     private count = 0;
@@ -33,11 +36,12 @@ class MongooseService {
 
     connectWithRetry = () => {
         log('Attempting MongoDB connection (will retry if needed)');
+        const mongoUrl =
+            PRODUCTION === true
+                ? `mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}/pathsport-api`
+                : `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/pathsport-api`;
         mongoose
-            .connect(
-                `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/api-db`,
-                this.mongooseOptions
-            )
+            .connect(mongoUrl, this.mongooseOptions)
             .then(() => {
                 log('MongoDB is connected');
             })

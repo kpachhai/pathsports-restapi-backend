@@ -84,31 +84,34 @@ curl --request POST \
 To create a player,
 
 ```
+token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJyamhrUkRxQnkiLCJkaWQiOiJkaWQ6ZWxhc3RvczpSYU5kME1kSWQiLCJwYXNzd29yZCI6IlBAc3N3MHJkIiwicGVybWlzc2lvbkxldmVsIjoxLCJyZWZyZXNoS2V5Ijp7InR5cGUiOiJCdWZmZXIiLCJkYXRhIjpbMjM2LDIwMCwyOSw2MSwxMjEsNjgsMjE2LDE2OCwxOTksMjQ5LDg1LDk4LDIxMSwyMywyNTAsMTgxXX0sImlhdCI6MTYzNTUyNzkwOCwiZXhwIjoxNjQzMzAzOTA4fQ._17mIIUNgeGES28frNQ64aHo9ISuC0sM5kUeMyJB90Y,refreshToken:rQMmakKwyexWCSJNJEkbWqg0CGnPZZ2pIATElyvAN8eOEShqss+a+tsRk8fTnSfQeyagBefNLx1ucg9pqVF54g=="
 curl --request POST \
   --url http://localhost:3000/players \
-  --header 'Authorization: Bearer <ACCESS_TOKEN_HERE>' \
-  --header 'Content-Type: application/json' \
-  --data-raw @test/players/newPlayer.json
+  --header "Authorization: Bearer $token" \
+  --header "Content-Type: application/json" \
+  --data "@test/players/newPlayer.json"
 ```
 
 To update a player,
 
 ```
+token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJyamhrUkRxQnkiLCJkaWQiOiJkaWQ6ZWxhc3RvczpSYU5kME1kSWQiLCJwYXNzd29yZCI6IlBAc3N3MHJkIiwicGVybWlzc2lvbkxldmVsIjoxLCJyZWZyZXNoS2V5Ijp7InR5cGUiOiJCdWZmZXIiLCJkYXRhIjpbMjM2LDIwMCwyOSw2MSwxMjEsNjgsMjE2LDE2OCwxOTksMjQ5LDg1LDk4LDIxMSwyMywyNTAsMTgxXX0sImlhdCI6MTYzNTUyNzkwOCwiZXhwIjoxNjQzMzAzOTA4fQ._17mIIUNgeGES28frNQ64aHo9ISuC0sM5kUeMyJB90Y,refreshToken:rQMmakKwyexWCSJNJEkbWqg0CGnPZZ2pIATElyvAN8eOEShqss+a+tsRk8fTnSfQeyagBefNLx1ucg9pqVF54g=="
 curl --request PATCH \
-  --url http://localhost:3000/players/did:elastos:<DID_HERE> \
-  --header 'Authorization: Bearer <ACCESS_TOKEN_HERE>' \
-  --header 'Content-Type: application/json' \
-  --data-raw @test/players/updatePlayer.json
+  --url http://localhost:3000/players/did:elastos:RaNd0MdId \
+  --header "Authorization: Bearer $token" \
+  --header "Content-Type: application/json" \
+  --data "@test/players/updatePlayer.json"
 ```
 
 To add new stats,
 
 ```
+token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJyamhrUkRxQnkiLCJkaWQiOiJkaWQ6ZWxhc3RvczpSYU5kME1kSWQiLCJwYXNzd29yZCI6IlBAc3N3MHJkIiwicGVybWlzc2lvbkxldmVsIjoxLCJyZWZyZXNoS2V5Ijp7InR5cGUiOiJCdWZmZXIiLCJkYXRhIjpbMjM2LDIwMCwyOSw2MSwxMjEsNjgsMjE2LDE2OCwxOTksMjQ5LDg1LDk4LDIxMSwyMywyNTAsMTgxXX0sImlhdCI6MTYzNTUyNzkwOCwiZXhwIjoxNjQzMzAzOTA4fQ._17mIIUNgeGES28frNQ64aHo9ISuC0sM5kUeMyJB90Y,refreshToken:rQMmakKwyexWCSJNJEkbWqg0CGnPZZ2pIATElyvAN8eOEShqss+a+tsRk8fTnSfQeyagBefNLx1ucg9pqVF54g=="
 curl --request PATCH \
-  --url http://localhost:3000/players/did:elastos:<DID_HERE>/stats \
-  --header 'Authorization: Bearer <ACCESS_TOKEN_HERE>' \
-  --header 'Content-Type: application/json' \
-  --data-raw @test/players/newStats.json
+  --url http://localhost:3000/players/did:elastos:RaNd0MdId/stats \
+  --header "Authorization: Bearer $token" \
+  --header "Content-Type: application/json" \
+  --data "@test/players/newStats.json"
 ```
 
 # Deploy to production
