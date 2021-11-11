@@ -128,6 +128,8 @@ class PlayersDao {
         photo: String,
         sport: String,
         team: String,
+        club: String,
+        position: String,
         social: this.socialSchema,
         statistics: [this.statisticsSchema],
     });

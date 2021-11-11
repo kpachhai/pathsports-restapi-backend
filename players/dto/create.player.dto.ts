@@ -14,6 +14,8 @@ export interface CreatePlayerDto {
     photo?: string;
     sport?: string;
     team?: string;
+    club?: string;
+    position?: string;
     social?: SocialDto;
     statistics?: [StatisticsDto];
 }
