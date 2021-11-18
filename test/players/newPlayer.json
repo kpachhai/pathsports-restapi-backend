@@ -1,14 +1,13 @@
 {
     "did": "did:elastos:ipsGDumwoBti6iwPF8rWHqFg2ishQ9yHdH",
-    "name": "Neymar",
-    "firstName": "Neymar",
-    "lastName": "da Silva Santos Júnior",
+    "jerseyName": "Neymar",
+    "fullName": "Neymar da Silva Santos Júnior",
     "birth": {
         "date": "1992-02-05",
         "place": "Mogi das Cruzes",
         "country": "Brazil"
     },
-    "nationality": "Brazil",
+    "location": "Brazil",
     "height": "175 cm",
     "weight": "68 kg",
     "injured": false,
@@ -17,7 +16,10 @@
         "instagram": "neymarOfficial",
         "facebook": "neymarOfficial",
         "snapchat": "neymarOfficial",
-        "discord": "neymarOfficial"
+        "discord": "neymarOfficial",
+        "twitter": "neymarOfficial",
+        "fifa": "neymarOfficial",
+        "nba": "neymarOfficial"
     },
     "sport": "football",
     "team": "Paris Saint Germain"

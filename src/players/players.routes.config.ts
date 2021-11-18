@@ -39,8 +39,8 @@ export class PlayersRoutes extends CommonRoutesConfig {
             // body('password')
             //     .isLength({ min: 5 })
             //     .withMessage('Must include password (5+ characters)'),
-            body('firstName').isString(),
-            body('lastName').isString(),
+            body('fullName').isString(),
+            // body('lastName').isString(),
             // body('permissionLevel').isInt(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             // PlayersMiddleware.validateSameEmailBelongToSameUser,
@@ -64,8 +64,8 @@ export class PlayersRoutes extends CommonRoutesConfig {
             //     .isLength({ min: 5 })
             //     .withMessage('Password must be 5+ characters')
             //     .optional(),
-            body('firstName').isString().optional(),
-            body('lastName').isString().optional(),
+            body('fullName').isString().optional(),
+            // body('lastName').isString().optional(),
             // body('permissionLevel').isInt().optional(),
             BodyValidationMiddleware.verifyBodyFieldsErrors,
             // PlayersMiddleware.validatePatchEmail,

@@ -12,7 +12,7 @@ let request: supertest.SuperAgentTest;
 })();
 
 const cleanUp = () => {
-    it('should cleanup users created for testing', async function () {
+    it('should cleanup users created for testing', async () => {
         const resAdmin = await request
             .delete(`/users/${apptest.adminUserId}`)
             .set({

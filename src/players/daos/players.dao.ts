@@ -20,7 +20,10 @@ class PlayersDao {
         instagram: String,
         facebook: String,
         snapchat: String,
-        discord: String
+        discord: String,
+        twitter: String,
+        fifa: String,
+        nba: String
     });
 
     statisticsSchema = new this.Schema({
@@ -116,12 +119,11 @@ class PlayersDao {
         summary: String,
         // email: String,
         // password: { type: String, select: false },
-        firstName: String,
-        lastName: String,
+        jerseyName: String,
+        fullName: String,
         // permissionLevel: Number,
-        name: String,
         birth: this.birthSchema,
-        nationality: String,
+        location: String,
         height: String,
         weight: String,
         injured: Boolean,

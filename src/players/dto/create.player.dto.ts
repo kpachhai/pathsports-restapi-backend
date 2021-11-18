@@ -3,11 +3,10 @@ import { MatchedDataOptions } from 'express-validator';
 export interface CreatePlayerDto {
     did: string;
     summary?: string;
-    firstName?: string;
-    lastName?: string;
-    name?: string;
+    jerseyName?: string;
+    fullName?: string;
     birth?: BirthDto;
-    nationality?: string;
+    location?: string;
     height?: string;
     weight?: string;
     injured?: boolean;
@@ -31,6 +30,9 @@ export interface SocialDto {
     facebook?: string;
     snapchat?: string;
     discord?: string;
+    twitter?: string;
+    fifa?: string;
+    nba?: string;
 }
 
 export interface StatisticsDto {

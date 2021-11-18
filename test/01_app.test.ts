@@ -1,6 +1,6 @@
 import { expect } from 'chai';
-describe('Index Test', function () {
-    it('should always pass', function () {
+describe('Index Test', () => {
+    it('should always pass', () => {
         expect(true).to.equal(true);
     });
 });
@@ -24,29 +24,29 @@ const tempPassword = 'tEmPp@ssw0rd';
 
 const firstUserBody = {
     did: `did:elastos:${shortid.generate()}`,
-    password: 'Sup3rSecret!23',
+    password: 'Sup3rSecret!23'
 };
 
 const secondUserBody = {
     did: `did:elastos:${shortid.generate()}`,
-    password: 'Sup3rSecret!23',
+    password: 'Sup3rSecret!23'
 };
 
 const adminUserBody = {
     did: `did:elastos:${shortid.generate()}`,
-    password: 'Sup3rSecret!2345',
+    password: 'Sup3rSecret!2345'
 };
 
 const playerUserBody = {
     did: `did:elastos:${shortid.generate()}`,
     password: 'Sup3rSecret!2345',
-    permissionLevel: 2,
+    permissionLevel: 2
 };
 
 const firstPlayerBody = {
     did: playerUserBody.did,
     firstName: 'Neymar',
-    lastName: 'da Silva Santos Júnior',
+    lastName: 'da Silva Santos Júnior'
 };
 
 const createUser = async (userBody: any) => {
@@ -107,8 +107,8 @@ const getPlayerAccessToken = async () => {
     request = await init.getSuperAgentRequest();
 })();
 
-describe('setup test cases', function () {
-    it('should allow a POST to /users', async function () {
+describe('setup test cases', () => {
+    it('should allow a POST to /users', async () => {
         const res = await createUser(firstUserBody);
 
         expect(res.status).to.equal(201);
@@ -118,7 +118,7 @@ describe('setup test cases', function () {
         firstUserIdTest = await getFirstUserId(res.body.id);
     });
 
-    it('should allow a POST to /auth', async function () {
+    it('should allow a POST to /auth', async () => {
         let tempUser = firstUserBody;
         tempUser.password = tempPassword;
         const res = await generateAuthToken(firstUserBody);
@@ -131,7 +131,7 @@ describe('setup test cases', function () {
         refreshToken = await getRefreshToken(res.body.refreshToken);
     });
 
-    it('should be able to regenerate auth token with new password', async function () {
+    it('should be able to regenerate auth token with new password', async () => {
         const res = await generateAuthToken(firstUserBody);
 
         expect(res.status).to.equal(201);
@@ -142,7 +142,7 @@ describe('setup test cases', function () {
         refreshToken = await getRefreshToken(res.body.refreshToken);
     });
 
-    it('should be able to generate admin access token for admin testing', async function () {
+    it('should be able to generate admin access token for admin testing', async () => {
         const resUser = await createUser(adminUserBody);
         const resAuth = await generateAuthToken(adminUserBody);
 
@@ -151,7 +151,7 @@ describe('setup test cases', function () {
         const res = await request
             .put(`/users/${resUser.body.id}/permissionLevel/8`)
             .set({
-                Authorization: `Bearer ${resAuth.body.accessToken}`,
+                Authorization: `Bearer ${resAuth.body.accessToken}`
             })
             .send({});
         const resAuth2 = await generateAuthToken(adminUserBody);
@@ -160,7 +160,7 @@ describe('setup test cases', function () {
         expect(resAuth2.status).to.equal(201);
     });
 
-    it('should be able to generate player access token for player testing', async function () {
+    it('should be able to generate player access token for player testing', async () => {
         const resUser = await createUser(playerUserBody);
         const resAuth = await generateAuthToken(playerUserBody);
 
@@ -171,7 +171,7 @@ describe('setup test cases', function () {
         expect(resAuth.status).to.equal(201);
     });
 
-    it('should be able to generate second user access token for player testing', async function () {
+    it('should be able to generate second user access token for player testing', async () => {
         const resUser = await createUser(secondUserBody);
         const resAuth = await generateAuthToken(secondUserBody);
 
@@ -202,5 +202,5 @@ export default {
     playerUserId,
     adminUserId,
     getSecondAccessToken,
-    secondUserBody,
+    secondUserBody
 };

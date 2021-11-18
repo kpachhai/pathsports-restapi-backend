@@ -4,7 +4,7 @@ import app from '../src/app';
 let request: supertest.SuperAgentTest;
 
 const initApp = async () => {
-    before(async function () {
+    before(async () => {
         request = await getSuperAgentRequest();
     });
 };
