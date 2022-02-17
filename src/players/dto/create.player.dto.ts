@@ -17,6 +17,7 @@ export interface CreatePlayerDto {
     position?: string;
     social?: SocialDto;
     statistics?: [StatisticsDto];
+    interests?: [string];
 }
 
 export interface BirthDto {

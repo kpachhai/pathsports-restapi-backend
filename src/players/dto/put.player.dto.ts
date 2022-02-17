@@ -17,4 +17,5 @@ export interface PutPlayerDto {
     position?: string;
     social?: SocialDto;
     statistics?: [StatisticsDto];
+    interests?: [string];
 }

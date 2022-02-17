@@ -133,7 +133,8 @@ class PlayersDao {
         club: String,
         position: String,
         social: this.socialSchema,
-        statistics: [this.statisticsSchema]
+        statistics: [this.statisticsSchema],
+        interests: [String]
     });
 
     Player = mongooseService.getMongoose().model('Players', this.playerSchema);
